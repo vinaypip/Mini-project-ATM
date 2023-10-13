@@ -16,7 +16,7 @@ private:										// private member varibles
 public:											// public member functions
 
 	// setData function is setting the Data into the private member variables
-	void setData(long int account_No_a, const string &name_a, int PIN_a, double balance_a, const string& mobile_No_a)
+	void setData(long int account_No_a, string_view name_a, int PIN_a, double balance_a,  string_view mobile_No_a)
 	{
 		account_No = account_No_a;	 // assigning the formal arguments to the private member var's
 		name = name_a;
@@ -56,7 +56,7 @@ public:											// public member functions
 	}
 
 	//setMobile function is Updating the user mobile no
-	void setMobile(const string& mob_prev, const string& mob_new)
+	void setMobile(string_view mob_prev,  string_view mob_new)
 	{
 		if (mob_prev == mobile_No)						// it will check old Mobile no
 		{
