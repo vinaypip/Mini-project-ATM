@@ -16,7 +16,7 @@ private:										// private member varibles
 public:											// public member functions
 
 	// setData function is setting the Data into the private member variables
-	void setData(long int account_No_a, string name_a, int PIN_a, double balance_a, string mobile_No_a)
+	void setData(long int account_No_a, const string &name_a, int PIN_a, double balance_a, const string& mobile_No_a)
 	{
 		account_No = account_No_a;	 // assigning the formal arguments to the private member var's
 		name = name_a;
@@ -26,13 +26,13 @@ public:											// public member functions
 	}
 
 	//getAccountNo function is returning the user's account no.
-	long int getAccountNo()
+	long int getAccountNo() const
 	{
 		return account_No;
 	}
 
 	//getName function is returning the user's Name
-	string getName()
+	string getName() const
 	{
 		return name;
 	}
@@ -56,7 +56,7 @@ public:											// public member functions
 	}
 
 	//setMobile function is Updating the user mobile no
-	void setMobile(string mob_prev, string mob_new)
+	void setMobile(const string& mob_prev, const string& mob_new)
 	{
 		if (mob_prev == mobile_No)						// it will check old Mobile no
 		{
@@ -94,7 +94,8 @@ public:											// public member functions
 
 int main()
 {
-	int choice = 0, enterPIN;		//enterPIN and enterAccountNo. ---> user authentication
+	int choice = 0;
+	int enterPIN;		//enterPIN and enterAccountNo. ---> user authentication
 	long int enterAccountNo;
 
 	system("cls");
@@ -105,94 +106,80 @@ int main()
 	user1.setData(987654321, "Hardik", 1234, 50000, "9370054900");
 
 
-	do
-	{
-		system("cls");
-
-		cout << endl << "****Welcome to ATM*****" << endl;
-		cout << endl << "Enter Your Account No ";	  // asking user to enter account no
-		cin >> enterAccountNo;
-
-		cout << endl << "Enter PIN ";				 // asking user to enter PIN
-		cin >> enterPIN;
-
-
-
-		// check whether enter values matches with user details
-		if ((enterAccountNo == user1.getAccountNo()) && (enterPIN == user1.getPIN()))
-		{
-			do
-			{
-				int amount = 0;
-				string oldMobileNo, newMobileNo;
-
-				system("cls");
-			
-				cout << endl << "**** Welcome to ATM *****" << endl;
-				cout << endl << "Select Options ";
-				cout << endl << "1. Check Balance";
-				cout << endl << "2. Cash withdraw";
-				cout << endl << "3. Show User Details";
-				cout << endl << "4. Update Mobile no.";
-				cout << endl << "5. Exit" << endl;
-				cin >> choice;						
-
-				switch (choice)						// switch condition
-				{
-				case 1:							
-					cout << endl << "Your Bank balance is :" << user1.getBalance();
-					// getBalance is ... printing the users	bank balance
-					_getch();
-					break;
-
-
-				case 2:								
-					cout << endl << "Enter the amount :";
-					cin >> amount;
-					user1.cashWithDraw(amount);			// calling cashWithdraw function 
-														// passing the withdraw amount 
-					break;
-
-
-				case 3:								
-					cout << endl << "*** User Details are :- ";
-					cout << endl << "-> Account no :" << user1.getAccountNo();
-					cout << endl << "-> Name      :" << user1.getName();
-					cout << endl << "-> Balance   :" << user1.getBalance();
-					cout << endl << "-> Mobile No. :" << user1.getMobileNo();
-					// getting and printing user details
-					_getch();
-					break;
-
-
-				case 4:								 
-					cout << endl << "Enter Old Mobile No. ";
-					cin >> oldMobileNo;							// take old mobile no
-
-					cout << endl << "Enter New Mobile No. ";
-					cin >> newMobileNo;							// take new mobile no
-
-					user1.setMobile(oldMobileNo, newMobileNo);	// now set new mobile no
-					break;
-
-					
-				case 5:
-					exit(0);						// exit application
-
-				default:							// handle invalid user inputs
-					cout << endl << "Enter Valid Data !!!";
-				}
-
-			} while (1);				  // condition will always TRUE and loop is										capable of running infinite times
-		}
-
-		else
-		{
-			cout << endl << "User Details are Invalid !!! ";
-			_getch();
-		}
-	} while (1);						// condition will always TRUE and loop is										capable of running infinite times
-
-	return 0;
+	void displayWelcomeMessage() {
+    system("cls");
+    std::cout << "\n****Welcome to ATM*****\n";
 }
 
+void displayMainMenu() {
+    std::cout << "\n**** Welcome to ATM *****\n";
+    std::cout << "\nSelect Options\n";
+    std::cout << "1. Check Balance\n";
+    std::cout << "2. Cash withdraw\n";
+    std::cout << "3. Show User Details\n";
+    std::cout << "4. Update Mobile no.\n";
+    std::cout << "5. Exit\n";
+}
+
+void handleMainMenuChoice(int choice, YourUserClass& user1) {
+    int amount = 0;
+    std::string oldMobileNo, newMobileNo;
+
+    switch (choice) {
+        case 1:
+            std::cout << "\nYour Bank balance is: " << user1.getBalance() << "\n";
+            _getch();
+            break;
+        case 2:
+            std::cout << "\nEnter the amount: ";
+            std::cin >> amount;
+            user1.cashWithDraw(amount);
+            break;
+        case 3:
+            std::cout << "\n*** User Details are:-\n";
+            std::cout << "-> Account no: " << user1.getAccountNo() << "\n";
+            std::cout << "-> Name: " << user1.getName() << "\n";
+            std::cout << "-> Balance: " << user1.getBalance() << "\n";
+            std::cout << "-> Mobile No.: " << user1.getMobileNo() << "\n";
+            _getch();
+            break;
+        case 4:
+            std::cout << "\nEnter Old Mobile No. ";
+            std::cin >> oldMobileNo;
+            std::cout << "\nEnter New Mobile No. ";
+            std::cin >> newMobileNo;
+            user1.setMobile(oldMobileNo, newMobileNo);
+            break;
+        case 5:
+            exit(0);
+        default:
+            std::cout << "\nEnter Valid Data !!!\n";
+    }
+}
+
+int main() {
+    int enterAccountNo, enterPIN, choice;
+    YourUserClass user1;
+
+    do {
+        displayWelcomeMessage();
+        std::cout << "\nEnter Your Account No ";
+        std::cin >> enterAccountNo;
+        std::cout << "\nEnter PIN ";
+        std::cin >> enterPIN;
+
+        if ((enterAccountNo == user1.getAccountNo()) && (enterPIN == user1.getPIN())) {
+            do {
+                displayWelcomeMessage();
+                displayMainMenu();
+                std::cin >> choice;
+                handleMainMenuChoice(choice, user1);
+            } while (choice != 5);
+        } else {
+            std::cout << "\nUser Details are Invalid !!!\n";
+            _getch();
+        }
+    } while (true);
+
+    return 0;
+}
